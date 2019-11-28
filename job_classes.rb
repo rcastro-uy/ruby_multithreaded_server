@@ -40,3 +40,7 @@ class Job_one
     end
 end
 
+job = Job_one.new
+job.exec_now
+job.exec_in (5)
+job.exec_later
