@@ -14,7 +14,6 @@ class Job_print
 
     # 1 - Execute the job in a synchronous way
     def exec_now
-        @job_id
         @sync=true
         # puts "Exec_now llamado con éxito.\nSync vale: #@sync "
         @job_id = add_job
@@ -31,7 +30,7 @@ class Job_print
         @time = time
         # puts "Exec_in llamado con éxito, time vale: #@time \n"
         @job_id = add_job
-        puts "JID = #@job_id"
+        puts "JID = #@job_id, con time = #@time\n"
     end
 
     # Job ID Counter - Give an unique ID to each job
@@ -66,6 +65,8 @@ class Job_freak_print < Job_print
     end
 end
 
+#sector de pruebas
+=begin
 job = Job_print.new
 job2 = Job_freak_print.new
 job.exec_now
@@ -76,3 +77,4 @@ sleep(2)
 job2.exec_now
 job2.exec_in (5)
 job2.exec_later
+=end
