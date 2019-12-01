@@ -10,7 +10,7 @@ class Q_Node
     end
 end
   
-class Deque
+class Dequeue
     def initialize
         @first = Q_Node.new(nil)
         @last = @first
@@ -72,9 +72,9 @@ class Deque
 
 end
 
-class Pruebas < Deque
+class Pruebas < Dequeue
     puts "Probando deque...\n"
-    deq = Deque.new
+    deq = Dequeue.new
     job = Job_print.new
     deq.pushBack(job.exec_now)
     job2 = Job_freak_print.new
@@ -83,5 +83,5 @@ class Pruebas < Deque
     deq.pushFront(job3.exec_in(5))
     puts "Deque lista tiene tamanio: #{deq.deq_size()}\n"
     job4 = Job_freak_print.new
-    deq.popFront()
+    puts deq.topFront()
 end

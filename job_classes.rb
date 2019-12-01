@@ -7,32 +7,28 @@ class Job_print
     @@no_of_jobs = 0
 
     # Instance variables
-    @job_id= 0
-    @sync= false
-    @time=0
-
+    def initialize (sync = false, time = 0)
+    @sync= sync
+    @time= time
+    @job_id= add_job
+    end
 
     # 1 - Execute the job in a synchronous way
     def exec_now
-        @sync=true
-        # puts "Exec_now llamado con éxito.\nSync vale: #@sync "
-        @job_id = add_job
-        puts "JID = #@job_id"
+        puts "Ejecutando job con metodo Exec_now ejecutado con éxito.\n"
     end
     # 2 - Enqueue a job and return its unique identifier
     def exec_later
-        # puts "Exec_later llamado con éxito\n"
-        @job_id = add_job
-        puts "JID = #@job_id"
+        puts "Ejecutando job con metodo Exec_later: ejecutado con éxito\n"
     end
     # 3 - Enqueue a job in at least <time> seconds
-    def exec_in time
-        @time = time
-        # puts "Exec_in llamado con éxito, time vale: #@time \n"
-        @job_id = add_job
-        puts "JID = #@job_id, con time = #@time\n"
+    def exec_in
+        puts "Ejecutando job con metodo Exec_in: ejecutado con éxito\n"
     end
 
+    def recieved
+        puts "JID = #@job_id"
+    end
     # Job ID Counter - Give an unique ID to each job
 
     def add_job ()
