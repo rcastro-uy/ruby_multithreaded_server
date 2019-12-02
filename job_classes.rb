@@ -15,15 +15,15 @@ class Job_print
 
     # 1 - Execute the job in a synchronous way
     def exec_now
-        puts "Ejecutando job con metodo Exec_now ejecutado con éxito.\n"
+        puts "Ejecutando job #@job_id con metodo Exec_now ejecutado con éxito.\n"
     end
     # 2 - Enqueue a job and return its unique identifier
     def exec_later
-        puts "Ejecutando job con metodo Exec_later: ejecutado con éxito\n"
+        puts "Ejecutando job #@job_id con metodo Exec_later: ejecutado con éxito\n"
     end
     # 3 - Enqueue a job in at least <time> seconds
     def exec_in
-        puts "Ejecutando job con metodo Exec_in: ejecutado con éxito\n"
+        puts "Ejecutando job #@job_id con metodo Exec_in: ejecutado con éxito\n"
     end
 
     def recieved
@@ -41,9 +41,12 @@ end
 class Job_freak_print < Job_print
 
     # Instance variables
-    @job_id= 0
-    @sync= false
-    @time=0
+    def initialize (sync = false, time =0)
+        super
+    end
+    # @job_id= 0
+    # @sync= false
+    # @time=0
 
     def exec_now
         super

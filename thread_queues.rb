@@ -1,3 +1,5 @@
+require 'logger'
+require 'socket'
 require_relative 'job_classes.rb'
 
 class Q_Node
@@ -82,11 +84,10 @@ class Dequeue
 
 end
 
-end
-
 
 class Worker
-    def self.start(num_threads:, queue_size:)
+
+    def self.start(num_threads:)
       queue = Dequeue.new
       worker = new(num_threads: num_threads, queue: queue)
       worker.spawn_threads
@@ -103,8 +104,36 @@ class Worker
     private :threads
     
     def spawn_threads
-        num_threads.times do
-            threads << Thread.new do
+        server = TCPServer.open('localhost', 8080)
+        puts 'Started server...'
+        num_threads.times do #loop
+            client_connection = server.accept
+            threads << Thread.start (client_connection) do |conn|
+                request = conn.gets
+                # en request estan los parametros que escucha conn en la conexion; es donde se guardaria la instruccion enviada desde el cliente
+                # se espera recibir (method, job_type), por ej, (exec_now, JobPrint)
+                method, job_type = request.split
+                # job parser/interpeter; crea el job de acuerdo a los parametros recibidos
+                if(method == "exec_in")
+                    time, job_type = job_type.split
+                else
+                    time = 0
+                end
+                if (method == "exec_now")
+                    sync = true
+                else
+                    sync = false
+                end
+                case job_type
+                when "Job_Print"
+                    job = Job_Print.new (sync, time)
+                conn.puts "Se recibió el #{job.recieved}\n"
+                when "Job_Freak_Print"
+                    job = Job_Freak_Print.new (sync, time)
+                else
+                    puts ("El tipo de trabajo recibido no es correcto.\n")
+                    # manejar excepciones, cerrar esta conexion particular pero que el thread siga activo
+                end
                 while session? || actions?
                     job = nil
                     mutex.synchronize do
@@ -113,22 +142,18 @@ class Worker
                         end
                         puts 'This thread has nothing to do' if queue.size == 0
                         job = queue.topFront
-                        #guardar este output en log
-                        puts "Por ejecutar la tarea: #{job.job_id}"
                     end
                     if (job.time == 0)
-                        job.exec_later
-                        queue.dequeue_action
+                        log.debug = puts job.exec_later
+                        dequeue_action
                     else
                         sleep(job.time)
-                        puts job.exec_in
-                        queue.dequeue_action
+                        log.debug = puts job.exec_in
+                        dequeue_action
                     end
-            # # wait for actions, blocks the current thread    
-            # action_proc, action_payload = wait_for_action
-            # # la accion se realiza desde un topFront para recibir el Job; luego se debe hacer popFront para sacar el elemento consultado
-            # action_proc.call(action_payload) if action_proc
                 end
+                log.debug = puts "Job done. Closing connection."
+                conn.close
             end
         end
         threads.each(&:join)
@@ -143,12 +168,14 @@ class Worker
             queue.pushBack(job)
             # manda true al pop
             queue.popFront(true)
+        end
     end
     # Llamar metodo cuando se cierra sesion
     def stop
-      queue.close
+      # queue.close
       threads.each(&:exit)
       threads.clear
+      queue = nil
       true
     end
   
@@ -162,6 +189,7 @@ class Worker
     
     def session?
       #para terminar el programa, llamar a esta funcion y retornar false
+      !stop
     end
     
     def dequeue_action
@@ -169,3 +197,6 @@ class Worker
     end
     
   end
+
+
+  
