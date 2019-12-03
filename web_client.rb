@@ -42,23 +42,16 @@ class Client
             socket.close
         end
     end
-    
+end
 
-
-
-
-
-socket.close
 
   # Main execution
 
-    hilos = 5
-    log = Logger.new ('server_log.log') 
     socket = TCPSocket.open('localhost', 8080)
     puts 'Starting client...'
     Client.new (socket)
-    worker = Worker.start (5)
-    while
-    output = socket.recv (100)
-    puts output
-    end
+
+        # while
+        # output = socket.recv (100)
+        # puts output
+        # end

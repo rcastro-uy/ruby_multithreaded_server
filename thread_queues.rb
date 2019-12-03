@@ -17,8 +17,8 @@ class Dequeue
     def initialize
         @first = Q_Node.new(nil)
         @last = @first
-        @mutex = Mutex.new
-        @cond_var = ConditionVariable.new 
+        @mutex = Mutex.new ()
+        @cond_var = ConditionVariable.new ()
       end
   
     def pushFront(job, param)
@@ -87,16 +87,9 @@ end
 
 class Worker
 
-    def self.start(num_threads:)
-      queue = Dequeue.new
-      worker = new(num_threads: num_threads, queue: queue)
-      worker.spawn_threads
-      worker
-    end
-  
-    def initialize(num_threads:, queue:)
+    def initialize(num_threads)
       @num_threads = num_threads
-      @queue = queue
+      @queue = Dequeue.new
       @threads = []
     end
     
@@ -129,11 +122,11 @@ class Worker
                 case job_type
                 when "Job_Print"
                     job = Job_Print.new(sync, time)
-                conn.puts "Se recibió el #{job.recieved}\n"
+                    conn.puts "Se recibió el #{job.recieved}\n"
                 when "Job_Freak_Print"
                     job = Job_Freak_Print.new(sync, time)
                 else
-                    puts ("El tipo de trabajo recibido no es correcto.\n")
+                    conn.puts ("El tipo de trabajo recibido no es correcto.\n")
                     # manejar excepciones, cerrar esta conexion particular pero que el thread siga activo
                 end
                 while session? || actions?
@@ -142,7 +135,7 @@ class Worker
                         while queue.is_empty? 
                             cond_var.wait(mutex) 
                         end
-                        puts 'This thread has nothing to do' if queue.size == 0
+                        conn.puts 'This thread has nothing to do' if queue.size == 0
                         job = queue.topFront
                     end
                     if (job.time == 0)
@@ -200,5 +193,9 @@ class Worker
     
   end
 
+  log = Logger.new ('server_log.log')
+  num_threads = 5
+  worker = Worker.new (num_threads)
+  worker.spawn_threads
 
   
