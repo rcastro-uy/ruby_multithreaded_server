@@ -108,14 +108,16 @@ class Worker
         puts 'Started server...'
         num_threads.times do #loop
             client_connection = server.accept
-            threads << Thread.start (client_connection) do |conn|
-                request = conn.gets
+            threads << Thread.new 
+                Thread.current (client_connection) do |conn|
+                request = conn.gets.chomp
                 # en request estan los parametros que escucha conn en la conexion; es donde se guardaria la instruccion enviada desde el cliente
-                # se espera recibir (method, job_type), por ej, (exec_now, JobPrint)
+                # se espera recibir (method, job_type), por ej, (exec_now, JobPrint); en el caso de exec_in, se recibe(method, time, job_type)
                 method, job_type = request.split
                 # job parser/interpeter; crea el job de acuerdo a los parametros recibidos
                 if(method == "exec_in")
                     time, job_type = job_type.split
+                    time.to_i
                 else
                     time = 0
                 end
@@ -126,10 +128,10 @@ class Worker
                 end
                 case job_type
                 when "Job_Print"
-                    job = Job_Print.new (sync, time)
+                    job = Job_Print.new(sync, time)
                 conn.puts "Se recibió el #{job.recieved}\n"
                 when "Job_Freak_Print"
-                    job = Job_Freak_Print.new (sync, time)
+                    job = Job_Freak_Print.new(sync, time)
                 else
                     puts ("El tipo de trabajo recibido no es correcto.\n")
                     # manejar excepciones, cerrar esta conexion particular pero que el thread siga activo

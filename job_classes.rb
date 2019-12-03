@@ -1,6 +1,6 @@
 #require ...
 
-class Job_print
+class Job_Print
 
     # Class variables
 
@@ -13,6 +13,7 @@ class Job_print
     @job_id= add_job
     end
 
+    attr_reader :time, :sync, :job_id
     # 1 - Execute the job in a synchronous way
     def exec_now
         puts "Ejecutando job #@job_id con metodo Exec_now ejecutado con éxito.\n"
@@ -38,7 +39,7 @@ class Job_print
     end
 end
 
-class Job_freak_print < Job_print
+class Job_Freak_Print < Job_Print
 
     # Instance variables
     def initialize (sync = false, time =0)
