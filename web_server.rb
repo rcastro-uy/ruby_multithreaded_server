@@ -25,6 +25,7 @@ class Server
        
         while true
             client = @server_socket.accept
+            puts "New client!"
             Thread.start(client) do |c|
                 handle_client(c)
             end
