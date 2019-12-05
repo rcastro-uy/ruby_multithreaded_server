@@ -12,18 +12,16 @@ From here, the client can send requests to the server, that contains a job and a
 ### Initial Configuration
 
 Ruby installed and Telnet Client enable (in Windows)
+The server must be executed running 'ruby web_server.rb', while starts the server and waits for inbound connections on localhost:8080
+From client side, a connection could be established using Telnet, providing 'localhost' hostname and '8080' port. In Windows, from cmd in the directory type 'telnet localhost 8080' to begin a connection. In any time, the 'quit' command close the connection from the current client.
 
 ## Features
 
-What's all the bells and whistles this project can perform?
-* What's the main functionality
-* You can also do another thing
-* If you get really randy, you can even do this
+This project is an implementation of a multithreaded server that accepts multiple TCP connections. Clients can connect to the server and enqueue different kinds of jobs (this first version includes Job_Print and Job_Freak_Print job types) that will run, according to the command used. If the job is required to be executed in a synchronous way, it skips the queue and is directly executed, sending the result of the work after finishes. On the other hand, the jobs that are asynchronous goes to the queue, and they will be processed following a first come - first served order (FIFO)
 
 ## Configuration
 
-Here you should write what are all of the configurations a user can enter when
-using the project.
+Not specials configurations needed to run this server.
 
 #### Argument 1
 Type: `String`  
