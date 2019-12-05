@@ -1,10 +1,15 @@
 # ruby_multithreaded_server
 LoopStudio - Challenge
 
-This is an execution queue that takes different commands from multiple clients (concurrently) and execute them one by one according to the command type. 
+This is an execution queue that takes different commands from multiple clients (concurrently) and executes them one by one according to the command type. 
 
 ## Installing / Getting started
-
+sobre que versión de Ruby está hecho
+En el installing, indicar que hay que instalar Ruby, como instalarlo, y si depende de algunas dependencies también aclararlo
+poner como iniciarlo separado por plataforma, Win o Linux
+https://rubyinstaller.org/downloads/
+Let’s install the Rspec gem now
+hay que clonar el repo (comando para clonarlo ahí) y luego recién como iniciar el server
 First, starts the server from cmd with 'ruby web_server.rb'
 Then, open as many clients as wanted and connect using 'telnet localhost 8080'
 From here, the client can send requests to the server, that contains a job and a command type (a particular way of execution)
