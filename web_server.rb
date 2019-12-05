@@ -1,3 +1,4 @@
+# web_server
 require 'logger'
 require 'socket'
 require_relative 'job_classes.rb'
@@ -5,13 +6,12 @@ require_relative 'job_classes.rb'
 class Server
 
     def initialize
-    puts "Iniciando server..."
+    puts "Starting server..."
     @queue = Queue.new
     @server_socket = TCPServer.open('localhost', 8080)
-    @mutex = Mutex.new
-    @log = Logger.new ('server2.log')
+    @log = Logger.new ('server.log')
     log.datetime_format = '%Y-%m-%d %H:%M:%S'
-    log.debug("Iniciando server...")
+    log.debug("Starting server...")
     # @cond_var = ConditionVariable.new
     end
     attr_accessor :server_socket, :log
@@ -26,20 +26,14 @@ class Server
         while true
             client = @server_socket.accept
             Thread.start(client) do |c|
-                puts "Conexion establecida"
                 handle_client(c)
-                #back_work = process the job in queue in FIFO way
             end
-            # while !@queue.empty?
-            #     back_work()
-            # end
         end
     end
 
     def handle_client (c)
         while true
             request = c.gets.chomp
-            puts "Se recibe #{request}"
             if request=="quit"
                 break
             end
@@ -48,7 +42,7 @@ class Server
             c.puts(response)
             c.flush
         end
-        puts "Cerrando conexion"
+        puts "Closing connection"
         c.close
     end
 
@@ -59,7 +53,7 @@ class Server
 
     def input_work (job) #Ejecuta sync (skip the queue) o encola los async
         if job.nil?
-            ret = "No se ha recibido un trabajo valido"
+            ret = "Invalid job, please try again"
             return ret
         end
         if job.sync
@@ -74,15 +68,11 @@ class Server
     end
 
     def create_job (req)
-        # job parser/interpeter; crea el job de acuerdo a los parametros recibidos
         backup = req
         method, params = req.split
         if(method == "exec_in")
-            puts "exec_in detectado, params viene con: #{params}"
             method, time, params = backup.split
-            puts "ahora time vale #{time} y params #{params}"
             time.to_i
-            puts "por ultimo, time se convierte en int valiendo: #{time}"
         else
             time = 0
         end
@@ -94,10 +84,8 @@ class Server
         end
         case params
         when "Job_Print"
-            puts "Creando un Job_Print"
             job = Job_Print.new(sync, time)
         when "Job_Freak_Print"
-            puts "Creando un Job_Freak_Print"
             job = Job_Freak_Print.new(sync, time)
         else
             job = nil
@@ -107,7 +95,6 @@ class Server
     end
 
     def back_work
-        puts "Haciendo back_work"
         actual_job = @queue.pop
         method = actual_job.method
         case method
