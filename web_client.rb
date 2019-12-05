@@ -1,5 +1,5 @@
 # web_client
-
+require 'net/telnet'
 require 'socket'
 require_relative 'job_classes'
 # require_relative 'thread_queues'

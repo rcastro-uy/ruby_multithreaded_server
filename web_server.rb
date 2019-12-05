@@ -10,33 +10,45 @@ class Server
     @server_socket = TCPServer.open('localhost', 8080)
     @mutex = Mutex.new
     @log = Logger.new ('server2.log')
+    log.datetime_format = '%Y-%m-%d %H:%M:%S'
+    log.debug("Iniciando server...")
     # @cond_var = ConditionVariable.new
     end
     attr_accessor :server_socket, :log
-
-    def start_server 
+    
+    def start_server
+        t=Thread.new do
+            while true
+                back_work()
+            end
+        end
+       
         while true
             client = @server_socket.accept
             Thread.start(client) do |c|
+                puts "Conexion establecida"
                 handle_client(c)
                 #back_work = process the job in queue in FIFO way
-            end.join 
-            while !@queue.empty?
-                back_work()
             end
+            # while !@queue.empty?
+            #     back_work()
+            # end
         end
     end
 
     def handle_client (c)
-        continue = true
-        while continue
+        while true
             request = c.gets.chomp
-            break if request=="quit"
+            puts "Se recibe #{request}"
+            if request=="quit"
+                break
+            end
             job = parser(request)
             response = input_work(job)
             c.puts(response)
             c.flush
         end
+        puts "Cerrando conexion"
         c.close
     end
 
@@ -96,19 +108,16 @@ class Server
 
     def back_work
         puts "Haciendo back_work"
-        while !@queue.empty?
-            actual_job = @queue.pop
-            method = actual_job.method
-            case method
-            when "exec_later"
-                res = actual_job.exec_later
-                @log.debug("#{res}")
-            when "exec_in"
-                delay = actual_job.time
-                sleep(delay)
-                res = actual_job.exec_in
-                @log.debug("#{res}")
-            end
+        actual_job = @queue.pop
+        method = actual_job.method
+        case method
+        when "exec_later"
+            res = actual_job.exec_later
+            @log.debug("#{res}")
+        when "exec_in"
+            clock = actual_job.time.to_i
+            sleep(clock)
+            @log.debug("#{actual_job.exec_in}")
         end
     end
 end
