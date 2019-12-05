@@ -2,56 +2,33 @@
 
 require 'socket'
 require_relative 'job_classes'
-require_relative 'web_server'
+# require_relative 'thread_queues'
 
-class Client
-    def initialize (socket)
-        @socket = socket
-        @request = send_request
-        @response = listen_response
-
-        @request.join
-        @response.join
+begin
+    server = TCPSocket.open('localhost', 8080)
+    begin
+        msg = server.read_nonblock(4096)
+        STDOUT.puts msg.chop
+        local, peer = s.addr, s.peeraddr
+    rescue SystemCallError 
+        
     end
 
-    def send_request
-        puts "Please enter method and job type:"
-        begin
-            Thread.new do
-                loop do
-                    msj = $stdin.gets.chomp
-                    @socket.puts msj
-                end
-            end
-        rescue IOError => exception
-            puts "Request Error: #{exception}"
-            socket.close          
-        end
-    end
+    loop do
+        STDOUT.puts "Enter method and job type:"
+        STDOUT.print '$>'
+        STDOUT.flush 
+        local = STDIN.gets
+        break if !local
+        server.puts(local)
+        server.flush
 
-    def listen_response
-        begin
-            Thread.new do
-                loop do
-                    response = socket.gets.chomp
-                    puts "#{response}"
-                end
-            end
-        rescue IOError => exception
-            puts "Listen Error: #{exception}"
-            socket.close
-        end
+        response = server.readpartial(4096)
+        puts(response.chop)
     end
+rescue
+    puts $!
+ensure
+    server.close if server
 end
-
-
-  # Main execution
-
-    socket = TCPSocket.open('localhost', 8080)
-    puts 'Starting client...'
-    Client.new (socket)
-
-        # while
-        # output = socket.recv (100)
-        # puts output
-        # end
+    

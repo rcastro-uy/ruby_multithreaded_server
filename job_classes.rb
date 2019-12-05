@@ -11,24 +11,30 @@ class Job_Print
     @sync= sync
     @time= time
     @job_id= add_job
+    @method= nil
     end
 
-    attr_reader :time, :sync, :job_id
+    attr_accessor :time, :sync, :job_id, :method
+
     # 1 - Execute the job in a synchronous way
     def exec_now
-        puts "Ejecutando job #@job_id con metodo Exec_now ejecutado con éxito.\n"
+        ret = "Ejecutando job #@job_id con metodo Exec_now ejecutado con éxito.\n"
+        return ret
     end
     # 2 - Enqueue a job and return its unique identifier
     def exec_later
-        puts "Ejecutando job #@job_id con metodo Exec_later: ejecutado con éxito\n"
+        ret = "Ejecutando job #@job_id con metodo Exec_later: ejecutado con éxito\n"
+        return ret
     end
     # 3 - Enqueue a job in at least <time> seconds
     def exec_in
-        puts "Ejecutando job #@job_id con metodo Exec_in: ejecutado con éxito\n"
+        ret = "Ejecutando job #@job_id con metodo Exec_in #@time: ejecutado con éxito\n"
+        return ret
     end
 
     def recieved
-        puts "JID = #@job_id"
+        ret = "Recieved JID = #@job_id"
+        return ret
     end
     # Job ID Counter - Give an unique ID to each job
 
@@ -45,23 +51,20 @@ class Job_Freak_Print < Job_Print
     def initialize (sync = false, time =0)
         super
     end
-    # @job_id= 0
-    # @sync= false
-    # @time=0
 
     def exec_now
-        super
-        puts "May the Force be with you Now\n"
+        ret = "Entrenando con la Fuerza, jedi #@job_id ejecutando metodo exec_now\n"
+        return ret
     end
    
     def exec_later
-        super
-        puts "Use the Force\n"
+        ret = "Entrenando con la Fuerza, jedi #@job_id ejecutando metodo exec_later\n"
+        return ret
     end
 
-    def exec_in time
-        super
-        puts "The Force is my ally!\n"
+    def exec_in
+        ret = "Entrenando con la Fuerza, jedi #@job_id ejecutando metodo exec_in con tiempo #@time\n"
+        return ret
     end
 end
 
