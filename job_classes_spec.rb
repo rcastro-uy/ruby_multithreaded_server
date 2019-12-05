@@ -16,17 +16,17 @@ class Job_Print
 
     # 1 - Execute the job in a synchronous way
     def exec_now
-        ret = "Executing job #@job_id with function Exec_now\n"
+        ret = "Executing job #@job_id with function exec_now\n"
         return ret
     end
     # 2 - Enqueue a job and return its unique identifier
     def exec_later
-        ret = "Executing job #@job_id with function Exec_later\n"
+        ret = "Executing job #@job_id with function exec_later\n"
         return ret
     end
     # 3 - Enqueue a job in at least <time> seconds
     def exec_in
-        ret = "Executing job #@job_id with function Exec_in #@time\n"
+        ret = "Executing job #@job_id with function exec_in in at least #@time\n"
         return ret
     end
 
@@ -49,27 +49,106 @@ class Job_Freak_Print < Job_Print
     end
 
     def exec_now
-        ret = "Using the Force, jedi #@job_id Executing exec_now\n"
+        ret = "Using the Force, jedi #@job_id executing exec_now\n"
         return ret
     end
    
     def exec_later
-        ret = "Using the Force, jedi #@job_id Executing exec_later\n"
+        ret = "Using the Force, jedi #@job_id executing exec_later\n"
         return ret
     end
 
     def exec_in
-        ret = "Using the Force, jedi #@job_id Executing exec_in in at least #@time\n"
+        ret = "Using the Force, jedi #@job_id executing exec_in in at least #@time\n"
         return ret
     end
 end
 
 describe Job_Print do
     context "When calling exec_now method" do
-        it "Should return a string 'Executing job #@job_id with function Exec_now\n'" do
+        it "Should return a string 'Executing job @job_id with function exec_now\n', where @job_id is the job.job_id value" do
             job = Job_Print.new
             message= job.exec_now
-            expect(message).to eq "Executing job #@job_id with function Exec_now\n"
+            expect(message).to eq "Executing job #{job.job_id} with function exec_now\n"
+        end
+    end
+
+    context "When calling exec_later method" do
+        it "Should return a string 'Executing job @job_id with function exec_later\n', where @job_id is the job.job_id value" do
+            job = Job_Print.new
+            message= job.exec_later
+            expect(message).to eq "Executing job #{job.job_id} with function exec_later\n"
+        end
+    end
+
+    context "When calling exec_in method" do
+        it "Should return a string 'Executing job @job_id with function exec_in in at least @time\n', where @job_id is the job.job_id value, and @time is job.time" do
+            job = Job_Print.new
+            tiempo = 3
+            job.time = tiempo
+            message= job.exec_in
+            expect(message).to eq "Executing job #{job.job_id} with function exec_in in at least #{tiempo}\n"
+        end
+    end
+
+    context "When calling recieved method" do
+        it "Should return a string 'Recieved JID = @job_id', where @job_id is the job.job_id value" do
+            job = Job_Print.new
+            message= job.recieved
+            expect(message).to eq "Recieved JID = #{job.job_id}"
+        end
+    end
+
+    context "When calling add_job method" do
+        it "Should increment the no_of_jobs in 1, and return a new identifier for the job using this class variable" do
+            job = Job_Print.new
+            next_job_id = job.add_job
+            expect(next_job_id).not_to eq job.job_id
+        end
+    end
+end
+
+
+describe Job_Freak_Print do
+    context "When calling exec_now method" do
+        it "Should return a string 'Using the Force, jedi @job_id executing exec_now\n', where @job_id is the job.job_id value" do
+            job = Job_Freak_Print.new
+            message= job.exec_now
+            expect(message).to eq "Using the Force, jedi #{job.job_id} executing exec_now\n"
+        end
+    end
+
+    context "When calling exec_later method" do
+        it "Should return a string 'Using the Force, jedi @job_id executing exec_later\n', where @job_id is the job.job_id value" do
+            job = Job_Freak_Print.new
+            message= job.exec_later
+            expect(message).to eq "Using the Force, jedi #{job.job_id} executing exec_later\n"
+        end
+    end
+
+    context "When calling exec_in method" do
+        it "Should return a string 'Using the Force, jedi @job_id executing exec_in in at least @time\n', where @job_id is the job.job_id value and @time is job.time" do
+            job = Job_Freak_Print.new
+            tiempo = 5
+            job.time = tiempo
+            message= job.exec_in
+            expect(message).to eq "Using the Force, jedi #{job.job_id} executing exec_in in at least #{tiempo}\n"
+        end
+    end
+
+    context "When calling recieved method" do
+        it "Should return a string 'Recieved JID = @job_id', where @job_id is the job.job_id value" do
+            job = Job_Freak_Print.new
+            message= job.recieved
+            expect(message).to eq "Recieved JID = #{job.job_id}"
+        end
+    end
+
+    context "When calling add_job method" do
+        it "Should increment the no_of_jobs in 1, and return a new identifier for the job using this class variable" do
+            job = Job_Freak_Print.new
+            next_job_id = job.add_job
+            expect(next_job_id).not_to eq job.job_id
         end
     end
 end
