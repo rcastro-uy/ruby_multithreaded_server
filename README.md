@@ -25,63 +25,46 @@ This project is an implementation of a multithreaded server that accepts multipl
 
 ## Configuration
 
-Not specials configurations needed to run this server.
+The server always expects: `Job command  Job type`. For example: `exec_now Job_Print`
 
-#### Argument 1
+#### Job command
 Type: `String`  
-Default: `'default value'`
+Default: N/A
 
-State what an argument does and how you can use it. If needed, you can provide
-an example below.
+Sets the parameters to execute a job in a particular way. This action is what the server will realize with a particular job. Currently, there are three available methods: 
+- `exec_now`: Execute a job in a synchronous way, and return the result (this job skips the queue)
+- `exec_later`: Enqueue a job and return its unique identifier
+- `exec_in @time`: Enqueue a job in at least @time seconds from now and return its unique identifier
 
-Example:
-```bash
-awesome-project "Some other value"  # Prints "You're nailing this readme!"
-```
+The server always log the result of each job
 
-#### Argument 2
-Type: `Number|Boolean`  
-Default: 100
+#### Job type
+Type: `String`  
+Default: N/A
 
-Copy-paste as many of these as you need.
+Give the information of which Job Class must be instatiated, to perform the Job command (method) given before. This version counts with two job types:
+
+Job_Print : The main Job Class, it has the the methods mentioned earlier available to execute. This job prints a string like: "Executing job #@job_id with function exec_now\n", where @job_id represents its ID and exec_now the called function.
+
+Job_Freak_Print : Inherites the Job_Print Class, modifying the beahvior of the available functions to print a slightly different messages, inspired in the universe of Star Wars
 
 ## Contributing
 
-When you publish something open source, one of the greatest motivations is that
-anyone can just jump in and start contributing to your project.
-
-These paragraphs are meant to welcome those kind souls to feel that they are
-needed. You should state something like:
-
-"If you'd like to contribute, please fork the repository and use a feature
-branch. Pull requests are warmly welcome."
-
-If there's anything else the developer needs to know (e.g. the code style
-guide), you should link it here. If there's a lot of things to take into
-consideration, it is common to separate this section to its own file called
-`CONTRIBUTING.md` (or similar). If so, you should say that it exists here.
+Not available yet - 
 
 ## Links
 
-Even though this information can be found inside the project on machine-readable
-format like in a .json file, it's good to include a summary of most useful
-links to humans using your project. You can include links like:
+Some of the most useful links reached in the research for the project:
 
-- Project homepage: https://your.github.com/awesome-project/
-- Repository: https://github.com/your/awesome-project/
-- Issue tracker: https://github.com/your/awesome-project/issues
-  - In case of sensitive bugs like security vulnerabilities, please contact
-    my@email.com directly instead of using issue tracker. We value your effort
-    to improve the security and privacy of this project!
-- Related projects:
-  - Your other project: https://github.com/your/other-project/
-  - Someone else's project: https://github.com/someones/awesome-project/
+    - https://medium.com/@kopilov.vlad/working-with-thread-in-ruby-948cd7e5f1a8
+    - https://thoughtbot.com/blog/back-to-basics-writing-unit-tests-first
+    - https://www.tutorialspoint.com/ruby/ruby_socket_programming.htm
+    - https://www.rubyguides.com/2015/04/ruby-network-programming/
 
+## Contact
+
+If you want to contact me, you can reach me at rcastro_uy@outlook.com
 
 ## Licensing
 
-One really important part: Give your project a proper license. Here you should
-state what the license is and how to find the text version of the license.
-Something like:
-
-"The code in this project is licensed under MIT license."
+The code in this project is not licensed yet.
