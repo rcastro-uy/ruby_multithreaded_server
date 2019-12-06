@@ -4,21 +4,20 @@ LoopStudio - Challenge
 This is an execution queue that takes different commands from multiple clients (concurrently) and executes them one by one according to the command type. 
 
 ## Installing / Getting started
-sobre que versión de Ruby está hecho
-En el installing, indicar que hay que instalar Ruby, como instalarlo, y si depende de algunas dependencies también aclararlo
-poner como iniciarlo separado por plataforma, Win o Linux
-https://rubyinstaller.org/downloads/
-Let’s install the Rspec gem now
-hay que clonar el repo (comando para clonarlo ahí) y luego recién como iniciar el server
+This code is made with ruby 2.6.5p114 (2019-10-01 revision 67812) [x64-mingw32] (for Windows)
+Ruby for Windows could be installed from https://rubyinstaller.org/downloads/, the last version without devkit it's ok for this program. The only external gem needed is the RSpec gem for Unit Tests. This could be installed from cmd running the command 'gem install rspec'
+In order to run this server locally, you should clone the repository with 'git clone' command followed by the URL of the repo. For this case, run 'git clone https://github.com/rcastro33/ruby_multithreaded_server.git'
+To get git in Windows, an option is download a git tools package like the offered in https://gitforwindows.org/ This package includes useful tools like Git Bash and a Git GUI that makes things easier for Windows users.
+You will need to establish TCP connections with the server in order to send requests and listen responses. Telnet is an option to connect to the server. In Windows systems, Telnet client is a feature that is disabled by default in some versions. Go to Windows Features and then search and till the 'Telnet Client' option.
+
 First, starts the server from cmd with 'ruby web_server.rb'
 Then, open as many clients as wanted and connect using 'telnet localhost 8080'
-From here, the client can send requests to the server, that contains a job and a command type (a particular way of execution)
+
 
 ### Initial Configuration
 
-Ruby installed and Telnet Client enable (in Windows)
-The server must be executed running 'ruby web_server.rb', while starts the server and waits for inbound connections on localhost:8080
-From client side, a connection could be established using Telnet, providing 'localhost' hostname and '8080' port. In Windows, from cmd in the directory type 'telnet localhost 8080' to begin a connection. In any time, the 'quit' command close the connection from the current client.
+The server must be executed running 'ruby web_server.rb' in cmd, while starts the server and waits for inbound connections on localhost:8080
+From client side, a connection could be established using Telnet, providing 'localhost' hostname and '8080' port. In Windows, from cmd in the directory type 'telnet localhost 8080' to begin a connection. From here, the client can send requests to the server, that contains a job and a command type (a particular way of execution). At any time, the 'quit' command close the connection from the current client. 
 
 ## Features
 
