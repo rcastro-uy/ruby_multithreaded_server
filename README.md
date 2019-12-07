@@ -5,14 +5,19 @@ This is an execution queue that takes different commands from multiple clients (
 
 ## Installing / Getting started
 This code is made with ruby 2.6.5p114 (2019-10-01 revision 67812) [x64-mingw32] (for Windows)
-Ruby for Windows could be installed from https://rubyinstaller.org/downloads/, the last version without devkit it's ok for this program. The only external gem needed is the RSpec gem for Unit Tests. This could be installed from cmd running the command 'gem install rspec'
-In order to run this server locally, you should clone the repository with 'git clone' command followed by the URL of the repo. For this case, run 'git clone https://github.com/rcastro33/ruby_multithreaded_server.git'
+Ruby for Windows could be installed from https://rubyinstaller.org/downloads/, the last version without devkit it's ok for this program. 
+
+The only external gem needed is the RSpec gem for Unit Tests. This could be installed from cmd running the command:
+
+'gem install rspec'
+
+In order to run this server locally, you should clone the repository with 'git clone' command followed by the URL of the repo. For this case, run: 
+
+'git clone https://github.com/rcastro33/ruby_multithreaded_server.git'
+
 To get git in Windows, an option is download a git tools package like the offered in https://gitforwindows.org/ This package includes useful tools like Git Bash and a Git GUI that makes things easier for Windows users.
+
 You will need to establish TCP connections with the server in order to send requests and listen responses. Telnet is an option to connect to the server. In Windows systems, Telnet client is a feature that is disabled by default in some versions. Go to Windows Features and then search and till the 'Telnet Client' option.
-
-First, starts the server from cmd with 'ruby web_server.rb'
-Then, open as many clients as wanted and connect using 'telnet localhost 8080'
-
 
 ### Initial Configuration
 
@@ -25,7 +30,7 @@ This project is an implementation of a multithreaded server that accepts multipl
 
 ## Configuration
 
-The server always expects: `Job command  Job type`. For example: `exec_now Job_Print`
+The server always expects: `Job_command  Job_type`. For example: `exec_now Job_Print`
 
 #### Job command
 Type: `String`  

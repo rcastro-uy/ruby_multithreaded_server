@@ -1,7 +1,9 @@
 require 'logger'
 require 'socket'
 require_relative 'job_classes.rb'
+require_relative 'web_server.rb'
 
+=begin
 class Server
 
     def initialize
@@ -108,6 +110,9 @@ class Server
         end
     end
 end
+
+=end
+
 
 describe Server do
     context "" do

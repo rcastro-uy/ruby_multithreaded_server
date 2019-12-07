@@ -18,17 +18,17 @@ class Job_Print
 
     # 1 - Execute the job in a synchronous way
     def exec_now
-        ret = "Executing job #@job_id with function Exec_now\n"
+        ret = "Executing job #@job_id with function exec_now\n"
         return ret
     end
     # 2 - Enqueue a job and return its unique identifier
     def exec_later
-        ret = "Executing job #@job_id with function Exec_later\n"
+        ret = "Executing job #@job_id with function exec_later\n"
         return ret
     end
     # 3 - Enqueue a job in at least <time> seconds
     def exec_in
-        ret = "Executing job #@job_id with function Exec_in #@time\n"
+        ret = "Executing job #@job_id with function exec_in in at least #@time\n"
         return ret
     end
 
@@ -51,17 +51,17 @@ class Job_Freak_Print < Job_Print
     end
 
     def exec_now
-        ret = "Using the Force, jedi #@job_id Executing exec_now\n"
+        ret = "Using the Force, jedi #@job_id executing exec_now\n"
         return ret
     end
    
     def exec_later
-        ret = "Using the Force, jedi #@job_id Executing exec_later\n"
+        ret = "Using the Force, jedi #@job_id executing exec_later\n"
         return ret
     end
 
     def exec_in
-        ret = "Using the Force, jedi #@job_id Executing exec_in in at least #@time\n"
+        ret = "Using the Force, jedi #@job_id executing exec_in in at least #@time\n"
         return ret
     end
 end
