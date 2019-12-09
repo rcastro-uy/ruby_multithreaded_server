@@ -54,15 +54,17 @@ class Server
 
     def input_work (job) #Ejecuta sync (skip the queue) o encola los async
         if job.nil?
-            ret = "Invalid job, please try again"
-            return ret
+            return "Invalid command, please try again"
         end
         if job.sync
             ret = job.exec_now
             @log.debug("#{ret}")
             return ret
         else
-            @queue.push(job)
+            w=Thread.new do
+                sleep(job.time)
+                @queue.push(job)
+            end
             ret = "#{job.job_id}"
             return ret
         end
@@ -71,17 +73,17 @@ class Server
     def create_job (req)
         backup = req
         method, params = req.split
-        if(method == "exec_in")
+        case method
+        when "exec_in"
             method, time, params = backup.split
-            time.to_i
-        else
+            time = time.to_i
+        when "exec_later"
             time = 0
-        end
-
-        if (method == "exec_now")
+        when "exec_now"
             sync = true
         else
-            sync = false
+            job = nil
+            return job
         end
         case params
         when "Job_Print"
@@ -100,11 +102,8 @@ class Server
         method = actual_job.method
         case method
         when "exec_later"
-            res = actual_job.exec_later
-            @log.debug("#{res}")
+            @log.debug("#{actual_job.exec_later}")
         when "exec_in"
-            clock = actual_job.time.to_i
-            sleep(clock)
             @log.debug("#{actual_job.exec_in}")
         end
     end

@@ -1,0 +1,12 @@
+# Logfile created on 2019-12-09 14:54:52 -0300 by logger.rb/66358
+D, [2019-12-09 14:54:52#60680] DEBUG -- : Starting server...
+D, [2019-12-09 14:55:00#60680] DEBUG -- : Executing job 1 with function exec_now
+
+D, [2019-12-09 14:55:19#60680] DEBUG -- : Executing job 3 with function exec_now
+
+D, [2019-12-09 14:55:24#60680] DEBUG -- : Executing job 4 with function exec_later
+
+D, [2019-12-09 14:55:34#60680] DEBUG -- : Executing job 5 with function exec_later
+
+D, [2019-12-09 14:55:45#60680] DEBUG -- : Using the Force, jedi 2 executing exec_in in at least 30
+
