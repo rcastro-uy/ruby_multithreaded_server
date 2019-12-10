@@ -44,18 +44,13 @@ class Server
             if request=="quit"
                 break
             end
-            job = parser(request)
+            job = create_job(request)
             response = input_work(job)
             c.puts(response)
             c.flush
         end
         puts "Closing connection"
         c.close
-    end
-
-    def parser (req)
-        job = create_job(req)
-        return job
     end
 
     def input_work (job) #Ejecuta sync (skip the queue) o encola los async
