@@ -45,7 +45,7 @@ RSpec.describe Job_Print do
 end
 
 
-describe Job_Freak_Print do
+RSpec.describe Job_Freak_Print do
     context "When calling exec_now method" do
         it "Should return a string 'Using the Force, jedi @job_id executing exec_now\n', where @job_id is the job.job_id value" do
             job = described_class.new

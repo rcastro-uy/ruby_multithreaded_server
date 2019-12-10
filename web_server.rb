@@ -5,21 +5,27 @@ require_relative 'job_classes.rb'
 
 class Server
 
-    def initialize
+    def initialize (file = 'server.log')
     puts "Starting server..."
     @queue = Queue.new
     @server_socket = TCPServer.open('localhost', 8080)
-    @log = Logger.new ('server.log')
+    @log = Logger.new (file)
     log.datetime_format = '%Y-%m-%d %H:%M:%S'
     log.debug("Starting server...")
-    # @cond_var = ConditionVariable.new
+    @cond_var = ConditionVariable.new
+    @mutex = Mutex.new
     end
-    attr_accessor :server_socket, :log
+    attr_accessor :server_socket, :log, :mutex
     
     def start_server
         t=Thread.new do
             while true
-                back_work()
+                @mutex.synchronize do
+                    while @queue.empty?
+                        @cond_var.wait(@mutex)
+                    end
+                    back_work()
+                end
             end
         end
        
@@ -63,7 +69,10 @@ class Server
         else
             w=Thread.new do
                 sleep(job.time)
-                @queue.push(job)
+                @mutex.synchronize do
+                    @queue.push(job)
+                    @cond_var.signal
+                end
             end
             ret = "#{job.job_id}"
             return ret
@@ -109,5 +118,5 @@ class Server
     end
 end
 
-    s = Server.new
+    s = Server.new 
     s.start_server

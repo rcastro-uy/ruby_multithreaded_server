@@ -1,13 +1,12 @@
 # web_client
 require 'net/telnet'
 require 'socket'
-require_relative 'job_classes'
 
-
+# Execution of web_client (without use of class)
 begin
-    server = TCPSocket.open('localhost', 8080)
+    socket = TCPSocket.open('localhost', 8080)
     begin
-        msg = server.read_nonblock(4096)
+        msg = socket.read_nonblock(4096)
         STDOUT.puts msg.chop
         local, peer = s.addr, s.peeraddr
     rescue SystemCallError 
@@ -20,15 +19,14 @@ begin
         STDOUT.flush 
         local = STDIN.gets
         break if !local
-        server.puts(local)
-        server.flush
-
-        response = server.readpartial(4096)
+        socket.puts(local)
+        socket.flush
+        response = socket.readpartial(4096)
         puts(response.chop)
     end
 rescue
     puts $!
 ensure
-    server.close if server
+    socket.close if socket
 end
     
