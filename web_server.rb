@@ -5,9 +5,9 @@ require_relative 'job_classes.rb'
 
 class Server
 
-    def initialize (file = 'server.log')
+    def initialize (file = 'server.log', port = 8080)
     @queue = Queue.new
-    @server_socket = TCPServer.open('localhost', 8080)
+    @server_socket = TCPServer.open("localhost", port)
     @log = Logger.new (file)
     log.datetime_format = '%Y-%m-%d %H:%M:%S'
     log.debug("Starting server...")
@@ -35,6 +35,14 @@ class Server
             Thread.start(client) do |c|
                 handle_client(c)
             end
+        end
+    end
+
+    def queue_not_empty
+        if @queue.empty?
+            false
+        else
+            true
         end
     end
 
