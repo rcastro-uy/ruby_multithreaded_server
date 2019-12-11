@@ -21,7 +21,7 @@ You will need to establish TCP connections with the server in order to send requ
 
 ### Initial Configuration
 
-The server must be executed running 'ruby web_server.rb' in cmd, while starts the server and waits for inbound connections on localhost:8080
+The server must be executed running 'ruby server.rb' in cmd, while starts the server and waits for inbound connections on localhost:8080
 From client side, a connection could be established using Telnet, providing 'localhost' hostname and '8080' port. In Windows, from cmd in the directory type 'telnet localhost 8080' to begin a connection. From here, the client can send requests to the server, that contains a job and a command type (a particular way of execution). At any time, the 'quit' command close the connection from the current client. 
 
 ## Features
@@ -65,6 +65,9 @@ Some of the most useful links reached in the research for the project:
     - https://thoughtbot.com/blog/back-to-basics-writing-unit-tests-first
     - https://www.tutorialspoint.com/ruby/ruby_socket_programming.htm
     - https://www.rubyguides.com/2015/04/ruby-network-programming/
+    - https://stackoverflow.com/questions/48780973/ruby-unit-test-for-a-simple-socket-server
+    - https://medium.com/workday-engineering/ruby-concurrency-in-praise-of-condition-variables-ddd6c68df41f
+    - https://www.tutorialspoint.com/rspec/index.htm
 
 ## Contact
 

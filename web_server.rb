@@ -6,7 +6,6 @@ require_relative 'job_classes.rb'
 class Server
 
     def initialize (file = 'server.log')
-    puts "Starting server..."
     @queue = Queue.new
     @server_socket = TCPServer.open('localhost', 8080)
     @log = Logger.new (file)
@@ -18,6 +17,7 @@ class Server
     attr_accessor :server_socket, :log, :mutex
     
     def start_server
+        puts "Starting server..."
         t=Thread.new do
             while true
                 @mutex.synchronize do
@@ -113,5 +113,3 @@ class Server
     end
 end
 
-    s = Server.new 
-    s.start_server
