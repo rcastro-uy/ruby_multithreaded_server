@@ -1,5 +1,3 @@
-#require ...
-
 class Job_Print
 
     # Class variables

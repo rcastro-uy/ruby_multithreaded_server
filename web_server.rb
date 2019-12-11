@@ -61,7 +61,7 @@ class Server
         c.close
     end
 
-    def input_work (job) #Ejecuta sync (skip the queue) o encola los async
+    def input_work (job) 
         if job.nil?
             return "Invalid command, please try again"
         end

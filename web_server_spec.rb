@@ -5,7 +5,7 @@ require_relative 'web_server.rb'
 describe Server do
     describe ' #start_server' do
 
-        context "when a client sends a wrong request of job execution" do
+        context "When a client sends a wrong request of job execution" do
             it "can't create a job -create a nil job-, and returns an error message 'Invalid command, please try again'" do
                 server = Server.new("spec.log", 8080)
                 job = server.create_job('Wrong input')
