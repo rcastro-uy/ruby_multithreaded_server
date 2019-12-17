@@ -9,12 +9,13 @@ class Server
     @queue = Queue.new
     @server_socket = TCPServer.open("localhost", port)
     @log = Logger.new (file)
-    log.datetime_format = '%Y-%m-%d %H:%M:%S'
-    log.debug("Starting server...")
+    @log.datetime_format = '%Y-%m-%d %H:%M:%S'
+    @log.debug("Starting server...")
     @cond_var = ConditionVariable.new
     @mutex = Mutex.new
     end
-    attr_accessor :server_socket, :log, :mutex
+
+    # attr_accessor :server_socket, :log, :mutex
     
     def start_server
         puts "Starting server..."
