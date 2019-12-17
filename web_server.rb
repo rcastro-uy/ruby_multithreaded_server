@@ -90,6 +90,7 @@ class Server
         when "exec_in"
             method, time, params = backup.split
             time = time.to_i
+            return job = nil if time < 0
         when "exec_later"
             time = 0
         when "exec_now"
