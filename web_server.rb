@@ -1,4 +1,9 @@
 # web_server
+# version in development
+# Pendientes: 
+# - crear clases diferentes para cada worker segun sus funciones
+# - Thread Pool
+# - Queue es thread-safe, no sería necesario protegerla. Revisar y corregir
 require 'logger'
 require 'socket'
 require_relative 'job_classes.rb'
@@ -34,12 +39,12 @@ class Server
             client = @server_socket.accept
             puts "New client!"
             Thread.start(client) do |c|
-                handle_client(c)
+                handle_client(c) 
             end
         end
     end
 
-    def queue_not_empty
+    def queue_not_empty #eliminar método, no es buena práctica dejar métodos solo por los UT; revisar y corregir
         if @queue.empty?
             false
         else
@@ -47,7 +52,7 @@ class Server
         end
     end
 
-    def handle_client (c)
+    def handle_client (c) #pendiente: manejar input "close", el cual cierra la conexion del lado del cliente
         while true
             request = c.gets.chomp
             if request=="quit"
@@ -72,7 +77,9 @@ class Server
             return ret
         else
             w=Thread.new do
-                sleep(job.time)
+                # sleep deja al thread inutilizado. Mejor crear una queue de trabajos_a_ejecutar (no listos aún), donde una vez cumplido su time, 
+                # un thread que revisa cada x tiempo esta queue de pendientes, lo encola a la queue principal de trabajos "listos" para ejecutar
+                sleep(job.time) 
                 @mutex.synchronize do
                     @queue.push(job)
                     @cond_var.signal
@@ -99,14 +106,23 @@ class Server
             job = nil
             return job
         end
-        case params
-        when "Job_Print"
-            job = Job_Print.new(sync, time)
-        when "Job_Freak_Print"
-            job = Job_Freak_Print.new(sync, time)
-        else
+
+        #investigar uso de eval para obtener el tipo de clase referido, y si no existe manejar la excepcion creando un objeto nulo
+        job_type = eval(params)
+        begin
+            job = job_type.new(sync, time)
+        rescue => exception
             job = nil
         end
+        
+        # case params
+        # when "Job_Print"
+        #     job = Job_Print.new(sync, time)
+        # when "Job_Freak_Print"
+        #     job = Job_Freak_Print.new(sync, time)
+        # else
+            
+        # end
         job.method = method if !job.nil?            
         job
     end

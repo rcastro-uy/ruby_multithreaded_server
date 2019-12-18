@@ -2,6 +2,10 @@ require 'socket'
 require_relative 'job_classes.rb'
 require_relative 'web_server.rb'
 
+# re-definir tests, probando cada método aislado y lo que se debe esperar de su ejecución independiente de lo que realizan otros métodos
+# en context, hacer referencia al método (#método) en lugar del string utilizado
+#no utilizar randoms ni estructuras switch; evaluar cada posible escenario de forma independiente
+
 describe Server do
     describe ' #start_server' do
 
